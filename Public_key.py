@@ -3,11 +3,16 @@ from gmpy_prime import *
 from gmpy2 import powmod, is_prime, gcd
 
 class PublicKey:
-
+    '''
+    Class to be used for Public Key encryption entities
+    '''
     def __init__(self):
         pass
 
     def key_gen(self, file_name = "public_key.txt"):
+        '''
+        Extracts n and g from the provided file_name
+        '''
         f = open(file_name,'r')
         lines = f.readlines()
         self.n = gmpy2.mpz(lines[0].split()[0])
@@ -16,7 +21,9 @@ class PublicKey:
         self.n2 = self.n * self.n
 
     def encrypt(self, m):
-
+        '''
+        Enncrypts plaintext into ciphertext
+        '''
         assert(m <= self.n)
         r=gmpy2.mpz_urandomb(rand, self.bits)
 
@@ -27,6 +34,10 @@ class PublicKey:
         return cipher
 
     def add_homo(self, c1, c2):
+        '''
+        Performs Homomorphic Addition using the property :
+            Product of ciphertexts equals ciphertext of sum
+        '''
         return (c1 * c2) % self.n**2
 
 if __name__ == '__main__':
