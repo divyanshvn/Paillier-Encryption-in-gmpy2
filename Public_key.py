@@ -5,13 +5,22 @@ from gmpy2 import powmod, is_prime, gcd
 class PublicKey:
     '''
     Class to be used for Public Key encryption entities
+    Member function :
+        key_gen(file_name)
+        encrypt(message)
+        add_homo(c1,c2)
     '''
+    
     def __init__(self):
         pass
 
     def key_gen(self, file_name = "public_key.txt"):
         '''
-        Extracts n and g from the provided file_name
+        Arguments :
+            file_name - name of the file containing public keys (set as 'public_key.txt' by default)
+        
+        Action :
+            Opens file file_name and reads public key (n.g) through the lines
         '''
         f = open(file_name,'r')
         lines = f.readlines()
@@ -22,7 +31,14 @@ class PublicKey:
 
     def encrypt(self, m):
         '''
-        Enncrypts plaintext into ciphertext
+        Arguments :
+            m - plain text message to be encrypted
+        
+        Return Value :
+            cipher text formed by encyption of plain text m
+        
+        Action :
+            Performs Paillier Encryption on plain text m using the public key pair
         '''
         assert(m <= self.n)
         r=gmpy2.mpz_urandomb(rand, self.bits)
@@ -34,9 +50,15 @@ class PublicKey:
         return cipher
 
     def add_homo(self, c1, c2):
-        '''
-        Performs Homomorphic Addition using the property :
-            Product of ciphertexts equals ciphertext of sum
+        '''        
+        Arguments :
+            c1 , c2 - set of ciphertexts to be added
+        
+        Action :
+            Performs Homomorphic Addition of c1 and c2 by multiplying them
+
+        Return Value :
+            ciphertext of the sum of plain texts corresponding to c1 and c2
         '''
         return (c1 * c2) % self.n**2
 
